@@ -26,11 +26,11 @@
         .section-content.active { display: block; animation: fadeIn 0.3s; }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
         
-        /* 多音字卡片專用樣式 */
-        .poly-card {
+        /* 拼音卡片專用樣式 */
+        .pinyin-card {
             transition: all 0.3s ease;
         }
-        .poly-card:hover {
+        .pinyin-card:hover {
             background-color: #dbeafe; /* Tailwind blue-100 */
         }
         .pinyin-text {
@@ -89,7 +89,11 @@
         <!-- 區塊 2: 語流音變 -->
         <section id="sec-sandhi" class="section-content">
             <div class="bg-white rounded-lg shadow p-6 mb-6">
-                <h2 class="text-2xl font-bold mb-4 text-blue-800">變調、輕聲與兒化</h2>
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-2xl font-bold text-blue-800">變調、輕聲與兒化</h2>
+                    <span class="text-sm bg-blue-100 text-blue-800 py-1 px-3 rounded-full">💡 點擊詞語顯示變調後的實際發音</span>
+                </div>
+                
                 <div class="mb-6">
                     <h3 class="text-lg font-bold text-gray-700 mb-2 border-l-4 border-blue-500 pl-2">三聲變調與「一/不」變調</h3>
                     <div id="grid-sandhi-rules" class="grid grid-cols-3 md:grid-cols-6 gap-3 mb-4"></div>
@@ -104,8 +108,9 @@
                     <div id="grid-erhua" class="grid grid-cols-3 md:grid-cols-6 gap-3"></div>
                 </div>
             </div>
+            
             <div class="bg-white rounded-lg shadow p-6">
-                <h2 class="text-xl font-bold mb-4 text-gray-800">語流音變綜合練習 (注意帶*號的變調與輕聲)</h2>
+                <h2 class="text-xl font-bold mb-4 text-gray-800">語流音變綜合練習 (帶*號為重點變調與輕聲)</h2>
                 <div id="grid-mixed" class="grid grid-cols-3 md:grid-cols-5 gap-4 text-center"></div>
             </div>
         </section>
@@ -190,16 +195,14 @@
                         <div id="grid-c-multi2" class="grid grid-cols-3 md:grid-cols-5 gap-3 text-center text-lg"></div>
                     </div>
                 </div>
-
             </div>
         </section>
 
     </main>
 
     <script>
-        // --- 詞彙資料庫 ---
+        // --- 詞彙資料庫 (含變調後拼音) ---
         const vocab = {
-            // 多音字分組結構
             polyphonicGroups: [
                 { char: '看', words: [{ text: '查看', pinyin: 'chá kàn' }, { text: '看守', pinyin: 'kān shǒu' }] },
                 { char: '朝', words: [{ text: '朝代', pinyin: 'cháo dài' }, { text: '朝氣', pinyin: 'zhāo qì' }] },
@@ -207,11 +210,63 @@
                 { char: '著', words: [{ text: '沉著', pinyin: 'chén zhuó' }, { text: '著急', pinyin: 'zháo jí' }] },
                 { char: '重', words: [{ text: '重新', pinyin: 'chóng xīn' }, { text: '重大', pinyin: 'zhòng dà' }] }
             ],
-            sandhi_rules: ['敏感', '稿紙', '一般', '一心', '一齊', '一連', '一早', '一體', '一致', '一項', '不禁', '不惜', '不時', '不行', '不想', '不止', '不怕', '不過'],
-            sandhi_up: ['以免', '早已', '子女', '領導', '洗澡', '苦惱', '減少', '美感', '導管', '可以', '一體', '一旁', '一律', '一向', '一早', '不如', '不顧', '不便', '不過', '不免'],
-            neutral: ['老太太', '模糊', '曲子', '愛人', '刺蝟', '箱子', '稀罕', '折騰', '騙子', '位子', '晚上', '皮子', '朋友', '道士', '舒服', '笛子', '生意', '稿子', '窗子', '嬸子'],
-            erhua: ['刀把兒', '紅包兒', '名牌兒', '小孩兒', '哥們兒', '一點兒', '果凍兒', '小熊兒', '火苗兒', '豆芽兒', '小丑兒', '加塞兒', '鞋帶兒', '一塊兒', '打盹兒', '沒准兒', '老伴兒', '花瓶兒', '花樣兒', '門鈴兒', '柵欄兒', '小偷兒', '火星兒', '耳膜兒', '藥方兒', '口罩兒', '魚漂兒', '針鼻兒'],
-            mixed: ['子女', '雖然', '交談', '享受', '操縱', '山峰', '任意', '鮮明', '初中', '激發', '不如*', '不顧*', '全身', '職工', '存款', '攜帶', '金牌', '侵權', '融合', '遵守', '司機', '自殺', '變動', '指揮', '選用', '柔和', '區域', '造型', '損耗', '種子*', '炸彈', '參觀', '尊敬', '溶解*', '標本*', '相似', '啟發', '散文', '解放軍', '潮流', '重複', '從此*', '曾經', '飼養', '請求', '食物', '熱潮', '船長*', '睡眠', '戰爭'],
+            sandhi_rules: [
+                { text: '敏感', pinyin: 'mín gǎn' }, { text: '稿紙', pinyin: 'gáo zhǐ' }, { text: '一般', pinyin: 'yì bān' }, 
+                { text: '一心', pinyin: 'yì xīn' }, { text: '一齊', pinyin: 'yì qí' }, { text: '一連', pinyin: 'yì lián' }, 
+                { text: '一早', pinyin: 'yì zǎo' }, { text: '一體', pinyin: 'yì tǐ' }, { text: '一致', pinyin: 'yí zhì' }, 
+                { text: '一項', pinyin: 'yí xiàng' }, { text: '不禁', pinyin: 'bù jīn' }, { text: '不惜', pinyin: 'bù xī' }, 
+                { text: '不時', pinyin: 'bù shí' }, { text: '不行', pinyin: 'bù xíng' }, { text: '不想', pinyin: 'bù xiǎng' }, 
+                { text: '不止', pinyin: 'bù zhǐ' }, { text: '不怕', pinyin: 'bú pà' }, { text: '不過', pinyin: 'bú guò' }
+            ],
+            sandhi_up: [
+                { text: '以免', pinyin: 'yí miǎn' }, { text: '早已', pinyin: 'záo yǐ' }, { text: '子女', pinyin: 'zí nǚ' }, 
+                { text: '領導', pinyin: 'líng dǎo' }, { text: '洗澡', pinyin: 'xí zǎo' }, { text: '苦惱', pinyin: 'kú nǎo' }, 
+                { text: '減少', pinyin: 'jián shǎo' }, { text: '美感', pinyin: 'méi gǎn' }, { text: '導管', pinyin: 'dáo guǎn' }, 
+                { text: '可以', pinyin: 'ké yǐ' }, { text: '一體', pinyin: 'yì tǐ' }, { text: '一旁', pinyin: 'yì páng' }, 
+                { text: '一律', pinyin: 'yí lǜ' }, { text: '一向', pinyin: 'yí xiàng' }, { text: '一早', pinyin: 'yì zǎo' }, 
+                { text: '不如', pinyin: 'bù rú' }, { text: '不顧', pinyin: 'bú gù' }, { text: '不便', pinyin: 'bú biàn' }, 
+                { text: '不過', pinyin: 'bú guò' }, { text: '不免', pinyin: 'bù miǎn' }
+            ],
+            neutral: [
+                { text: '老太太', pinyin: 'lǎo tài tai' }, { text: '模糊', pinyin: 'mó hu' }, { text: '曲子', pinyin: 'qǔ zi' }, 
+                { text: '愛人', pinyin: 'ài ren' }, { text: '刺蝟', pinyin: 'cì wei' }, { text: '箱子', pinyin: 'xiāng zi' }, 
+                { text: '稀罕', pinyin: 'xī han' }, { text: '折騰', pinyin: 'zhē teng' }, { text: '騙子', pinyin: 'piàn zi' }, 
+                { text: '位子', pinyin: 'wèi zi' }, { text: '晚上', pinyin: 'wǎn shang' }, { text: '皮子', pinyin: 'pí zi' }, 
+                { text: '朋友', pinyin: 'péng you' }, { text: '道士', pinyin: 'dào shi' }, { text: '舒服', pinyin: 'shū fu' }, 
+                { text: '笛子', pinyin: 'dí zi' }, { text: '生意', pinyin: 'shēng yi' }, { text: '稿子', pinyin: 'gǎo zi' }, 
+                { text: '窗子', pinyin: 'chuāng zi' }, { text: '嬸子', pinyin: 'shěn zi' }
+            ],
+            erhua: [
+                { text: '刀把兒', pinyin: 'dāo bàr' }, { text: '紅包兒', pinyin: 'hóng bāor' }, { text: '名牌兒', pinyin: 'míng páir' }, 
+                { text: '小孩兒', pinyin: 'xiǎo háir' }, { text: '哥們兒', pinyin: 'gē menr' }, { text: '一點兒', pinyin: 'yì diǎnr' }, 
+                { text: '果凍兒', pinyin: 'guǒ dòngr' }, { text: '小熊兒', pinyin: 'xiǎo xióngr' }, { text: '火苗兒', pinyin: 'huǒ miáor' }, 
+                { text: '豆芽兒', pinyin: 'dòu yár' }, { text: '小丑兒', pinyin: 'xiǎo chǒur' }, { text: '加塞兒', pinyin: 'jiā sāir' }, 
+                { text: '鞋帶兒', pinyin: 'xié dàir' }, { text: '一塊兒', pinyin: 'yí kuàir' }, { text: '打盹兒', pinyin: 'dǎ dǔnr' }, 
+                { text: '沒准兒', pinyin: 'méi zhǔnr' }, { text: '老伴兒', pinyin: 'lǎo bànr' }, { text: '花瓶兒', pinyin: 'huā píngr' }, 
+                { text: '花樣兒', pinyin: 'huā yàngr' }, { text: '門鈴兒', pinyin: 'mén língr' }, { text: '柵欄兒', pinyin: 'zhà lánr' }, 
+                { text: '小偷兒', pinyin: 'xiǎo tōur' }, { text: '火星兒', pinyin: 'huǒ xīngr' }, { text: '耳膜兒', pinyin: 'ěr mór' }, 
+                { text: '藥方兒', pinyin: 'yào fāngr' }, { text: '口罩兒', pinyin: 'kǒu zhàor' }, { text: '魚漂兒', pinyin: 'yú piāor' }, 
+                { text: '針鼻兒', pinyin: 'zhēn bír' }
+            ],
+            mixed: [
+                { text: '子女', pinyin: 'zí nǚ' }, { text: '雖然', pinyin: 'suī rán' }, { text: '交談', pinyin: 'jiāo tán' }, 
+                { text: '享受', pinyin: 'xiǎng shòu' }, { text: '操縱', pinyin: 'cāo zòng' }, { text: '山峰', pinyin: 'shān fēng' }, 
+                { text: '任意', pinyin: 'rèn yì' }, { text: '鮮明', pinyin: 'xiān míng' }, { text: '初中', pinyin: 'chū zhōng' }, 
+                { text: '激發', pinyin: 'jī fā' }, { text: '不如*', pinyin: 'bù rú' }, { text: '不顧*', pinyin: 'bú gù' }, 
+                { text: '全身', pinyin: 'quán shēn' }, { text: '職工', pinyin: 'zhí gōng' }, { text: '存款', pinyin: 'cún kuǎn' }, 
+                { text: '攜帶', pinyin: 'xié dài' }, { text: '金牌', pinyin: 'jīn pái' }, { text: '侵權', pinyin: 'qīn quán' }, 
+                { text: '融合', pinyin: 'róng hé' }, { text: '遵守', pinyin: 'zūn shǒu' }, { text: '司機', pinyin: 'sī jī' }, 
+                { text: '自殺', pinyin: 'zì shā' }, { text: '變動', pinyin: 'biàn dòng' }, { text: '指揮', pinyin: 'zhǐ huī' }, 
+                { text: '選用', pinyin: 'xuǎn yòng' }, { text: '柔和', pinyin: 'róu hé' }, { text: '區域', pinyin: 'qū yù' }, 
+                { text: '造型', pinyin: 'zào xíng' }, { text: '損耗', pinyin: 'sǔn hào' }, { text: '種子*', pinyin: 'zhǒng zi' }, 
+                { text: '炸彈', pinyin: 'zhà dàn' }, { text: '參觀', pinyin: 'cān guān' }, { text: '尊敬', pinyin: 'zūn jìng' }, 
+                { text: '溶解*', pinyin: 'róng jiě' }, { text: '標本*', pinyin: 'biāo běn' }, { text: '相似', pinyin: 'xiāng sì' }, 
+                { text: '啟發', pinyin: 'qǐ fā' }, { text: '散文', pinyin: 'sǎn wén' }, { text: '解放軍', pinyin: 'jiě fàng jūn' }, 
+                { text: '潮流', pinyin: 'cháo liú' }, { text: '重複', pinyin: 'chóng fù' }, { text: '從此*', pinyin: 'cóng cǐ' }, 
+                { text: '曾經', pinyin: 'céng jīng' }, { text: '飼養', pinyin: 'sì yǎng' }, { text: '請求', pinyin: 'qǐng qiú' }, 
+                { text: '食物', pinyin: 'shí wù' }, { text: '熱潮', pinyin: 'rè cháo' }, { text: '船長*', pinyin: 'chuán zhǎng' }, 
+                { text: '睡眠', pinyin: 'shuì mián' }, { text: '戰爭', pinyin: 'zhàn zhēng' }
+            ],
             r_zhu: ['地震', '冬至', '海嘯', '事變', '水流', '人造', '手工'],
             r_dong: ['上班', '傷心', '彈琴', '發言', '吃飯', '打仗', '握手'],
             r_pian: ['春天', '好心', '法學', '水力', '電線', '德語', '長期'],
@@ -225,7 +280,7 @@
 
         // --- 渲染函數 ---
         
-        // 渲染多音字區塊 (特別處理)
+        // 渲染多音字區塊
         function renderPolyphonicGroups() {
             const container = document.getElementById('grid-polyphonic');
             container.innerHTML = vocab.polyphonicGroups.map(group => `
@@ -233,7 +288,7 @@
                     <div class="text-sm text-gray-500 mb-2 font-bold bg-white px-2 rounded-full shadow-inner">字：${group.char}</div>
                     <div class="w-full flex flex-col gap-2">
                         ${group.words.map(w => `
-                            <div class="poly-card cursor-pointer bg-blue-50 border border-blue-200 text-blue-800 font-bold py-2 px-3 rounded text-center" onclick="this.querySelector('.pinyin-text').classList.toggle('show')">
+                            <div class="pinyin-card cursor-pointer bg-blue-50 border border-blue-200 text-blue-800 font-bold py-2 px-3 rounded text-center" onclick="this.querySelector('.pinyin-text').classList.toggle('show')">
                                 <div class="text-lg">${w.text}</div>
                                 <div class="pinyin-text text-sm font-normal text-gray-600">${w.pinyin}</div>
                             </div>
@@ -243,30 +298,45 @@
             `).join('');
         }
 
-        // 渲染一般網格
-        function renderGrid(containerId, wordsArray, baseClass = "bg-gray-50 border border-gray-200 p-3 rounded text-center word-card") {
+        // 渲染帶有拼音翻牌效果的網格
+        function renderPinyinGrid(containerId, wordsArray, baseClass = "pinyin-card cursor-pointer bg-white border border-gray-200 p-3 rounded text-center shadow-sm") {
+            const container = document.getElementById(containerId);
+            container.innerHTML = wordsArray.map(obj => {
+                const displayText = obj.text.includes('*') ? `<span class="text-red-600 font-bold">${obj.text}</span>` : obj.text;
+                return `
+                <div class="${baseClass}" onclick="this.querySelector('.pinyin-text').classList.toggle('show')">
+                    <div class="text-lg font-medium">${displayText}</div>
+                    <div class="pinyin-text text-sm font-normal text-blue-600">${obj.pinyin}</div>
+                </div>
+                `;
+            }).join('');
+        }
+
+        // 渲染純文字的一般網格
+        function renderTextGrid(containerId, wordsArray, baseClass = "bg-gray-50 border border-gray-200 p-3 rounded text-center word-card") {
             const container = document.getElementById(containerId);
             container.innerHTML = wordsArray.map(word => 
-                `<div class="${baseClass}">${word.includes('*') ? `<span class="text-red-600 font-bold">${word}</span>` : word}</div>`
+                `<div class="${baseClass}">${word}</div>`
             ).join('');
         }
 
         // 初始化渲染
         renderPolyphonicGroups();
-        renderGrid('grid-sandhi-rules', vocab.sandhi_rules);
-        renderGrid('grid-sandhi-up', vocab.sandhi_up);
-        renderGrid('grid-neutral', vocab.neutral);
-        renderGrid('grid-erhua', vocab.erhua);
-        renderGrid('grid-mixed', vocab.mixed);
-        renderGrid('grid-r-zhu', vocab.r_zhu);
-        renderGrid('grid-r-dong', vocab.r_dong);
-        renderGrid('grid-r-pian', vocab.r_pian);
-        renderGrid('grid-r-hou', vocab.r_hou);
-        renderGrid('grid-r-lian', vocab.r_lian);
-        renderGrid('grid-c-mono1', vocab.c_mono1);
-        renderGrid('grid-c-multi1', vocab.c_multi1);
-        renderGrid('grid-c-mono2', vocab.c_mono2);
-        renderGrid('grid-c-multi2', vocab.c_multi2);
+        renderPinyinGrid('grid-sandhi-rules', vocab.sandhi_rules);
+        renderPinyinGrid('grid-sandhi-up', vocab.sandhi_up);
+        renderPinyinGrid('grid-neutral', vocab.neutral);
+        renderPinyinGrid('grid-erhua', vocab.erhua);
+        renderPinyinGrid('grid-mixed', vocab.mixed, "pinyin-card cursor-pointer bg-gray-50 border border-gray-200 p-3 rounded text-center shadow-sm");
+        
+        renderTextGrid('grid-r-zhu', vocab.r_zhu);
+        renderTextGrid('grid-r-dong', vocab.r_dong);
+        renderTextGrid('grid-r-pian', vocab.r_pian);
+        renderTextGrid('grid-r-hou', vocab.r_hou);
+        renderTextGrid('grid-r-lian', vocab.r_lian);
+        renderTextGrid('grid-c-mono1', vocab.c_mono1);
+        renderTextGrid('grid-c-multi1', vocab.c_multi1);
+        renderTextGrid('grid-c-mono2', vocab.c_mono2);
+        renderTextGrid('grid-c-multi2', vocab.c_multi2);
 
         // --- 頁籤切換邏輯 ---
         document.querySelectorAll('.tab-btn').forEach(button => {
