@@ -348,13 +348,13 @@
             });
         });
 
-        // --- 錄音功能模組 (手機跨平台優化版) ---
+        // --- 錄音功能模組 (強制 Apple 裝置輸出 MP4) ---
         function setupRecorder(idSuffix, defaultFileNameBase) {
             let mediaRecorder;
             let audioChunks = [];
             let startTime;
             let timerInterval;
-            const TIME_LIMIT = 210; // 3分30秒 = 210秒
+            const TIME_LIMIT = 210; // 3分30秒
 
             const btnStart = document.getElementById('btn-start-' + idSuffix);
             const btnStop = document.getElementById('btn-stop-' + idSuffix);
@@ -364,23 +364,28 @@
             const timerText = document.getElementById('record-timer-' + idSuffix);
             const dlHint = document.getElementById('download-hint-' + idSuffix);
 
-            // 判斷瀏覽器支援的音訊格式 (解決 iPhone Safari 不支援 webm 的問題)
-            let mimeType = '';
-            let fileExt = 'webm';
-            if (window.MediaRecorder && MediaRecorder.isTypeSupported) {
-                if (MediaRecorder.isTypeSupported('audio/webm')) {
-                    mimeType = 'audio/webm';
-                } else if (MediaRecorder.isTypeSupported('audio/mp4')) {
-                    mimeType = 'audio/mp4';
-                    fileExt = 'mp4'; // iPhone 通常走這條路
-                }
-            }
-
             btnStart.addEventListener('click', async () => {
                 try {
                     const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
                     
-                    // 套用支援的格式
+                    // 【關鍵判斷】：偵測是否為蘋果裝置 (iPhone/iPad/Mac)
+                    const isAppleDevice = /Mac|iPod|iPhone|iPad/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+                    
+                    let mimeType = '';
+                    let fileExt = 'webm'; // 預設給 Android / 電腦
+
+                    // 如果是蘋果裝置，且支援 mp4，則強制指定為 mp4，不再詢問是否支援 webm
+                    if (isAppleDevice && window.MediaRecorder && MediaRecorder.isTypeSupported('audio/mp4')) {
+                        mimeType = 'audio/mp4';
+                        fileExt = 'mp4';
+                    } else if (window.MediaRecorder && MediaRecorder.isTypeSupported('audio/webm')) {
+                        mimeType = 'audio/webm';
+                        fileExt = 'webm';
+                    } else if (window.MediaRecorder && MediaRecorder.isTypeSupported('audio/mp4')) {
+                        mimeType = 'audio/mp4';
+                        fileExt = 'mp4';
+                    }
+
                     const options = mimeType ? { mimeType: mimeType } : {};
                     mediaRecorder = new MediaRecorder(stream, options);
                     audioChunks = [];
@@ -390,14 +395,15 @@
                     };
 
                     mediaRecorder.onstop = () => {
-                        const audioBlob = new Blob(audioChunks, { type: mimeType || 'audio/webm' });
+                        // 如果有指定 mimeType 就用指定的，否則退回預設
+                        const audioBlob = new Blob(audioChunks, { type: mimeType || 'audio/mp4' });
                         const audioUrl = URL.createObjectURL(audioBlob);
                         
                         audioPlayback.src = audioUrl;
                         audioPlayback.classList.remove('hidden');
                         
                         btnDownload.href = audioUrl;
-                        // 自動根據手機系統配發正確的副檔名
+                        // 設定下載檔名與副檔名 (這裡會動態變成 .mp4 或 .webm)
                         btnDownload.download = `${defaultFileNameBase}.${fileExt}`;
                         btnDownload.classList.remove('hidden');
                         dlHint.classList.remove('hidden');
@@ -432,7 +438,6 @@
                         const seconds = String(totalSeconds % 60).padStart(2, '0');
                         timerText.textContent = `${minutes}:${seconds}`;
                         
-                        // 超時強制停止 (3分30秒)
                         if (totalSeconds >= TIME_LIMIT) {
                             btnStop.click();
                             alert(`測驗錄音已達到 3 分 30 秒的時間限制，已自動停止。`);
@@ -449,7 +454,6 @@
                     mediaRecorder.stop();
                     clearInterval(timerInterval);
                     
-                    // UI 狀態還原
                     btnStart.classList.replace('bg-gray-400', 'bg-red-500');
                     btnStart.classList.replace('bg-gray-400', 'hover:bg-red-600');
                     btnStart.disabled = false;
@@ -465,7 +469,7 @@
             });
         }
 
-        // 啟動測驗一與測驗二的錄音模組 (自動分配副檔名)
+        // 啟動測驗一與測驗二的錄音模組
         setupRecorder('1', '第五課_測驗一');
         setupRecorder('2', '第五課_測驗二');
     </script>
