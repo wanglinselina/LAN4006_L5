@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="zh-HK">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LAN4006: 多音節詞語應試技巧互動練習</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .word-card {
+            transition: all 0.2s ease-in-out;
+            cursor: pointer;
+        }
+        .word-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            background-color: #f0fdf4;
+            border-color: #22c55e;
+            color: #166534;
+        }
+        .tab-btn.active {
+            border-bottom: 2px solid #2563eb;
+            color: #2563eb;
+            font-weight: 700;
+        }
+        .section-content { display: none; }
+        .section-content.active { display: block; animation: fadeIn 0.3s; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    </style>
+</head>
+<body class="bg-gray-100 text-gray-800 font-sans antialiased min-h-screen">
+
+    <header class="bg-blue-800 text-white shadow-md py-6">
+        <div class="max-w-6xl mx-auto px-4">
+            <h1 class="text-3xl font-bold mb-2">LAN4006：多音節詞語應試技巧</h1>
+            <p class="text-blue-200">國家語委普通話水平測試備試課程 —— 第五課互動練習與作業系統</p>
+        </div>
+    </header>
+
+    <main class="max-w-6xl mx-auto px-4 py-6">
+        <!-- 導航標籤 -->
+        <div class="flex flex-wrap border-b border-gray-300 mb-6" id="tabs">
+            <button class="tab-btn active py-3 px-5 text-gray-600 hover:text-blue-600 focus:outline-none" data-target="sec-theory">📖 技巧與多音字</button>
+            <button class="tab-btn py-3 px-5 text-gray-600 hover:text-blue-600 focus:outline-none" data-target="sec-sandhi">🗣️ 語流音變專區</button>
+            <button class="tab-btn py-3 px-5 text-gray-600 hover:text-blue-600 focus:outline-none" data-target="sec-rhythm">🎵 輕重音節律</button>
+            <button class="tab-btn py-3 px-5 text-gray-600 hover:text-blue-600 focus:outline-none" data-target="sec-practice">📝 課堂綜合測驗</button>
+            <button class="tab-btn py-3 px-5 text-gray-600 hover:text-blue-600 focus:outline-none" data-target="sec-homework">🎙️ 課後錄音作業</button>
+        </div>
+
+        <!-- 區塊 1: 技巧與多音字 -->
+        <section id="sec-theory" class="section-content active">
+            <div class="bg-white rounded-lg shadow p-6 mb-6">
+                <h2 class="text-2xl font-bold mb-4 text-blue-800">應試核心技巧</h2>
+                <ul class="list-disc pl-6 space-y-2 text-lg">
+                    <li><strong>聲調要讀到位：</strong>特別留意<span class="text-red-600 font-bold">第二個音節</span>聲調的準確度，避免「虎頭蛇尾」。</li>
+                    <li><strong>詞語整體連讀：</strong>多音節詞語均具有語法和詞彙意義，切忌為了清晰而刻意將字分開朗讀。</li>
+                    <li><strong>多音字唯一讀音：</strong>在多音節詞語中出現的多音字，只能讀該詞語中<span class="text-blue-600 font-bold">唯一的一個正確讀音</span>（與單音節不同）。</li>
+                </ul>
+            </div>
+            <div class="bg-white rounded-lg shadow p-6">
+                <h2 class="text-xl font-bold mb-4 text-gray-800">多音字讀音辨析練習</h2>
+                <div id="grid-polyphonic" class="grid grid-cols-2 md:grid-cols-5 gap-4"></div>
+            </div>
+        </section>
+
+        <!-- 區塊 2: 語流音變 -->
+        <section id="sec-sandhi" class="section-content">
+            <div class="bg-white rounded-lg shadow p-6 mb-6">
+                <h2 class="text-2xl font-bold mb-4 text-blue-800">變調、輕聲與兒化</h2>
+                <div class="mb-6">
+                    <h3 class="text-lg font-bold text-gray-700 mb-2 border-l-4 border-blue-500 pl-2">三聲變調與「一/不」變調</h3>
+                    <div id="grid-sandhi-rules" class="grid grid-cols-3 md:grid-cols-6 gap-3 mb-4"></div>
+                    <div id="grid-sandhi-up" class="grid grid-cols-3 md:grid-cols-5 gap-3"></div>
+                </div>
+                <div class="mb-6">
+                    <h3 class="text-lg font-bold text-gray-700 mb-2 border-l-4 border-green-500 pl-2">必讀輕聲詞語</h3>
+                    <div id="grid-neutral" class="grid grid-cols-3 md:grid-cols-5 gap-3"></div>
+                </div>
+                <div>
+                    <h3 class="text-lg font-bold text-gray-700 mb-2 border-l-4 border-purple-500 pl-2">兒化音練習</h3>
+                    <div id="grid-erhua" class="grid grid-cols-3 md:grid-cols-6 gap-3"></div>
+                </div>
+            </div>
+            <div class="bg-white rounded-lg shadow p-6">
+                <h2 class="text-xl font-bold mb-4 text-gray-800">語流音變綜合練習 (注意帶*號的變調與輕聲)</h2>
+                <div id="grid-mixed" class="grid grid-cols-3 md:grid-cols-5 gap-4 text-center"></div>
+            </div>
+        </section>
+
+        <!-- 區塊 3: 輕重音節律 -->
+        <section id="sec-rhythm" class="section-content">
+            <div class="bg-white rounded-lg shadow p-6 mb-6">
+                <h2 class="text-2xl font-bold mb-4 text-blue-800">多音節詞語輕重音節律</h2>
+                <p class="mb-4 text-gray-600">根據語法結構分配重音，朗讀時請注意以下格式：</p>
+                
+                <div class="space-y-6">
+                    <div><h3 class="font-bold text-red-600 mb-2">主謂結構 (重音在動詞)</h3><div id="grid-r-zhu" class="grid grid-cols-4 md:grid-cols-7 gap-3"></div></div>
+                    <div><h3 class="font-bold text-blue-600 mb-2">動賓結構 (重音在動詞)</h3><div id="grid-r-dong" class="grid grid-cols-4 md:grid-cols-7 gap-3"></div></div>
+                    <div><h3 class="font-bold text-green-600 mb-2">偏正結構 (重音在修飾詞)</h3><div id="grid-r-pian" class="grid grid-cols-4 md:grid-cols-7 gap-3"></div></div>
+                    <div><h3 class="font-bold text-purple-600 mb-2">後補結構 (重音在主詞)</h3><div id="grid-r-hou" class="grid grid-cols-4 md:grid-cols-7 gap-3"></div></div>
+                    <div><h3 class="font-bold text-orange-600 mb-2">聯合結構 (前後重度一致)</h3><div id="grid-r-lian" class="grid grid-cols-4 md:grid-cols-7 gap-3"></div></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 區塊 4: 課堂綜合測驗 -->
+        <section id="sec-practice" class="section-content">
+            <div class="bg-white rounded-lg shadow p-6 mb-6">
+                <h2 class="text-2xl font-bold mb-4 text-blue-800">課堂綜合字詞測驗表</h2>
+                
+                <h3 class="text-lg font-bold mt-6 mb-2 border-b pb-1">單音節字詞測驗 (一)</h3>
+                <div id="grid-c-mono1" class="grid grid-cols-5 md:grid-cols-10 gap-2 text-center text-xl"></div>
+                
+                <h3 class="text-lg font-bold mt-8 mb-2 border-b pb-1">多音節詞語測驗 (一)</h3>
+                <div id="grid-c-multi1" class="grid grid-cols-3 md:grid-cols-5 gap-3 text-center text-lg"></div>
+                
+                <h3 class="text-lg font-bold mt-8 mb-2 border-b pb-1">單音節字詞測驗 (二)</h3>
+                <div id="grid-c-mono2" class="grid grid-cols-5 md:grid-cols-10 gap-2 text-center text-xl"></div>
+                
+                <h3 class="text-lg font-bold mt-8 mb-2 border-b pb-1">多音節詞語測驗 (二)</h3>
+                <div id="grid-c-multi2" class="grid grid-cols-3 md:grid-cols-5 gap-3 text-center text-lg"></div>
+            </div>
+        </section>
+
+        <!-- 區塊 5: 課後錄音作業 -->
+        <section id="sec-homework" class="section-content">
+            <div class="bg-white rounded-lg shadow p-8 text-center border-t-8 border-blue-600">
+                <div class="text-5xl mb-4">🎙️</div>
+                <h2 class="text-2xl font-bold mb-2 text-gray-800">課後朗讀錄音作業繳交系統</h2>
+                <p class="text-gray-600 mb-6">點擊下方按鈕生成專屬的作業繳交連結，學生開啟連結後即可直接在瀏覽器錄製音檔並提交測驗。</p>
+                
+                <button id="btn-copy-link" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-full shadow-lg transition-transform transform hover:scale-105">
+                    🔗 生成並複製學生專用提交連結
+                </button>
+                <div id="copy-msg" class="text-green-600 font-bold mt-4 opacity-0 transition-opacity">✅ 連結已成功複製到剪貼簿！可直接貼給學生。</div>
+                
+                <div class="mt-10 p-6 bg-gray-50 border border-gray-200 rounded-lg text-left">
+                    <h3 class="font-bold text-gray-700 mb-2">💡 學生端介面預覽：</h3>
+                    <div class="bg-white border rounded p-4 flex items-center justify-between">
+                        <div>
+                            <div class="font-bold text-lg">第五課綜合測驗錄音</div>
+                            <div class="text-sm text-gray-500">請確保周圍環境安靜，總時長限制 3 分 30 秒。</div>
+                        </div>
+                        <button class="bg-red-500 text-white px-4 py-2 rounded-full cursor-not-allowed opacity-75">⏺ 開始錄音</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <script>
+        // 詞彙資料庫
+        const vocab = {
+            polyphonic: ['查看', '看守', '朝代', '朝氣', '波長', '長官', '沉著', '著急', '重新', '重大'],
+            sandhi_rules: ['敏感', '稿紙', '一般', '一心', '一齊', '一連', '一早', '一體', '一致', '一項', '不禁', '不惜', '不時', '不行', '不想', '不止', '不怕', '不過'],
+            sandhi_up: ['以免', '早已', '子女', '領導', '洗澡', '苦惱', '減少', '美感', '導管', '可以', '一體', '一旁', '一律', '一向', '一早', '不如', '不顧', '不便', '不過', '不免'],
+            neutral: ['老太太', '模糊', '曲子', '愛人', '刺蝟', '箱子', '稀罕', '折騰', '騙子', '位子', '晚上', '皮子', '朋友', '道士', '舒服', '笛子', '生意', '稿子', '窗子', '嬸子'],
+            erhua: ['刀把兒', '紅包兒', '名牌兒', '小孩兒', '哥們兒', '一點兒', '果凍兒', '小熊兒', '火苗兒', '豆芽兒', '小丑兒', '加塞兒', '鞋帶兒', '一塊兒', '打盹兒', '沒准兒', '老伴兒', '花瓶兒', '花樣兒', '門鈴兒', '柵欄兒', '小偷兒', '火星兒', '耳膜兒', '藥方兒', '口罩兒', '魚漂兒', '針鼻兒'],
+            mixed: ['子女', '雖然', '交談', '享受', '操縱', '山峰', '任意', '鮮明', '初中', '激發', '不如*', '不顧*', '全身', '職工', '存款', '攜帶', '金牌', '侵權', '融合', '遵守', '司機', '自殺', '變動', '指揮', '選用', '柔和', '區域', '造型', '損耗', '種子*', '炸彈', '參觀', '尊敬', '溶解*', '標本*', '相似', '啟發', '散文', '解放軍', '潮流', '重複', '從此*', '曾經', '飼養', '請求', '食物', '熱潮', '船長*', '睡眠', '戰爭'],
+            r_zhu: ['地震', '冬至', '海嘯', '事變', '水流', '人造', '手工'],
+            r_dong: ['上班', '傷心', '彈琴', '發言', '吃飯', '打仗', '握手'],
+            r_pian: ['春天', '好心', '法學', '水力', '電線', '德語', '長期'],
+            r_hou: ['說服', '書本', '放大', '摧毀', '修正', '壓縮', '打破'],
+            r_lian: ['國家', '江河', '購買', '防治', '珍寶', '海洋', '男女'],
+            c_mono1: '把 空 法 個 破 里 買 談 廣 名 苦 良 令 寶 貸 輪 當 份 工 補 可 凡 戶 登 逃 密 掛 點 列 合 否 換 品 婚 妙 關 北 田 話 民 停 吊 沒 統 謀 盯 木 放 逼 陸 會'.split(' '),
+            c_multi1: '辦法 排列 滿意 房間 單獨 談話 年代 離開 改變 抗議 包圍 判定 毛病 放心 當地 逃避 凝聚 連接 概括 可靠 半夜 培訓 貿易 非常 當年 特別 農藥 練習 感動 困境 佈置 害怕 美好 分別 導彈 天空 領導 臨時 更新 海岸 提高 合理 列車 高速 漢語 本質 行列 猛烈 服從 低級'.split(' '),
+            c_mono2: '入 橋 暫 求 松 柴 假 傘 琴 聖 如 築 槽 沖 注 窄 剪 善 著 賊 早 辭 賞 究 炸 素 圈 單 催 磁 肉 鐘 鄭 走 准 缺 從 場 溶 算 刀 忍 囑 駐 受 差 起 掃 就 罪 撐'.split(' '),
+            c_multi2: '人民 簡直 生理 忍受 熱帶 子女 職務 全面 制定 宣佈 子弟 鎮壓 回應 枝條 重新 懲罰 死亡 前途 師傅 加深 顯露 自發 前期 消失 草地 產業 結論 資金 學堂 做夢 處分 詞語 劇場 操縱 基建 速度 傳教士 熱能 樹林 專制 前頭 歲月 速率 隨即 清理 測量 試製 熱鬧 燦爛'.split(' ')
+        };
+
+        // 渲染函數
+        function renderGrid(containerId, wordsArray, baseClass = "bg-gray-50 border border-gray-200 p-3 rounded text-center word-card") {
+            const container = document.getElementById(containerId);
+            container.innerHTML = wordsArray.map(word => 
+                `<div class="${baseClass}">${word.includes('*') ? `<span class="text-red-600 font-bold">${word}</span>` : word}</div>`
+            ).join('');
+        }
+
+        // 初始化渲染
+        renderGrid('grid-polyphonic', vocab.polyphonic, "bg-blue-50 border border-blue-200 p-3 rounded text-center word-card text-lg font-bold");
+        renderGrid('grid-sandhi-rules', vocab.sandhi_rules);
+        renderGrid('grid-sandhi-up', vocab.sandhi_up);
+        renderGrid('grid-neutral', vocab.neutral);
+        renderGrid('grid-erhua', vocab.erhua);
+        renderGrid('grid-mixed', vocab.mixed);
+        
+        renderGrid('grid-r-zhu', vocab.r_zhu);
+        renderGrid('grid-r-dong', vocab.r_dong);
+        renderGrid('grid-r-pian', vocab.r_pian);
+        renderGrid('grid-r-hou', vocab.r_hou);
+        renderGrid('grid-r-lian', vocab.r_lian);
+
+        renderGrid('grid-c-mono1', vocab.c_mono1);
+        renderGrid('grid-c-multi1', vocab.c_multi1);
+        renderGrid('grid-c-mono2', vocab.c_mono2);
+        renderGrid('grid-c-multi2', vocab.c_multi2);
+
+        // 頁籤切換邏輯
+        document.querySelectorAll('.tab-btn').forEach(button => {
+            button.addEventListener('click', () => {
+                document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+                document.querySelectorAll('.section-content').forEach(sec => sec.classList.remove('active'));
+                
+                button.classList.add('active');
+                document.getElementById(button.dataset.target).classList.add('active');
+            });
+        });
+
+        // 模擬生成連結與複製功能
+        document.getElementById('btn-copy-link').addEventListener('click', () => {
+            const mockUrl = window.location.href.split('?')[0] + "?assignment=LAN4006-L05-Audio";
+            navigator.clipboard.writeText(mockUrl).then(() => {
+                const msg = document.getElementById('copy-msg');
+                msg.style.opacity = 1;
+                setTimeout(() => { msg.style.opacity = 0; }, 3000);
+            });
+        });
+    </script>
+</body>
+</html>
