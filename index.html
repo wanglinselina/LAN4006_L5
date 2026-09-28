@@ -42,7 +42,7 @@
             <button class="tab-btn active py-3 px-5 text-gray-600 hover:text-blue-600 focus:outline-none" data-target="sec-theory">📖 技巧與多音字</button>
             <button class="tab-btn py-3 px-5 text-gray-600 hover:text-blue-600 focus:outline-none" data-target="sec-sandhi">🗣️ 語流音變專區</button>
             <button class="tab-btn py-3 px-5 text-gray-600 hover:text-blue-600 focus:outline-none" data-target="sec-rhythm">🎵 輕重音節律</button>
-            <button class="tab-btn py-3 px-5 text-gray-600 hover:text-blue-600 focus:outline-none" data-target="sec-practice">📝 課堂綜合測驗 (含錄音繳交)</button>
+            <button class="tab-btn py-3 px-5 text-gray-600 hover:text-blue-600 focus:outline-none" data-target="sec-practice">📝 課堂綜合測驗 (錄音與下載)</button>
         </div>
 
         <!-- 區塊 1: 技巧與多音字 -->
@@ -100,51 +100,72 @@
             </div>
         </section>
 
-        <!-- 區塊 4: 課堂綜合測驗 (含錄音繳交) -->
-        <section id="sec-practice" class="section-content relative">
-            
-            <!-- 錄音懸浮控制面板 -->
-            <div class="sticky top-4 z-50 bg-blue-50 border-2 border-blue-300 rounded-lg p-5 mb-6 shadow-xl flex flex-col items-center">
-                <h3 class="text-xl font-bold mb-2 text-blue-800">🎙️ 課堂錄音作業繳交</h3>
-                <p class="text-gray-600 mb-4 text-sm text-center">請點擊「開始錄音」並朗讀下方測驗表。完成後點擊「停止錄音」，確認無誤即可提交。總時長限制為 3 分 30 秒。</p>
-                
-                <div class="flex space-x-4 mb-3">
-                    <button id="btn-start-record" class="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-6 rounded-full shadow transition-colors">
-                        ⏺ 開始錄音
-                    </button>
-                    <button id="btn-stop-record" class="bg-gray-400 text-white font-bold py-2 px-6 rounded-full shadow cursor-not-allowed" disabled>
-                        ⏹ 停止錄音
-                    </button>
-                </div>
-                
-                <!-- 錄音狀態與計時 -->
-                <div id="recording-indicator" class="hidden flex items-center space-x-2 text-red-600 font-bold mb-2">
-                    <span class="animate-pulse w-3 h-3 bg-red-600 rounded-full"></span>
-                    <span>錄音中... <span id="record-timer">00:00</span> / 03:30</span>
-                </div>
-                
-                <!-- 音檔播放器與提交按鈕 -->
-                <audio id="audio-playback" controls class="hidden w-full max-w-md mt-2 mb-3"></audio>
-                <button id="btn-submit" class="hidden bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-10 rounded-full shadow transition-colors text-lg">
-                    📤 提交作業
-                </button>
-                <div id="submit-msg" class="hidden text-green-600 font-bold mt-2 text-lg">✅ 作業已成功提交給老師！</div>
-            </div>
-
+        <!-- 區塊 4: 課堂綜合測驗 (測驗一與測驗二) -->
+        <section id="sec-practice" class="section-content">
             <div class="bg-white rounded-lg shadow p-6 mb-6">
                 <h2 class="text-2xl font-bold mb-4 text-blue-800">課堂綜合字詞測驗表</h2>
+                <p class="text-gray-600 mb-6">請分別錄製「測驗一」與「測驗二」，並下載檔案。下載後請依老師指示改名（例：學號_姓名_測驗一）並上傳繳交。每項測驗限時 3 分 30 秒。</p>
                 
-                <h3 class="text-lg font-bold mt-6 mb-2 border-b pb-1">單音節字詞測驗 (一)</h3>
-                <div id="grid-c-mono1" class="grid grid-cols-5 md:grid-cols-10 gap-2 text-center text-xl"></div>
-                
-                <h3 class="text-lg font-bold mt-8 mb-2 border-b pb-1">多音節詞語測驗 (一)</h3>
-                <div id="grid-c-multi1" class="grid grid-cols-3 md:grid-cols-5 gap-3 text-center text-lg"></div>
-                
-                <h3 class="text-lg font-bold mt-8 mb-2 border-b pb-1">單音節字詞測驗 (二)</h3>
-                <div id="grid-c-mono2" class="grid grid-cols-5 md:grid-cols-10 gap-2 text-center text-xl"></div>
-                
-                <h3 class="text-lg font-bold mt-8 mb-2 border-b pb-1">多音節詞語測驗 (二)</h3>
-                <div id="grid-c-multi2" class="grid grid-cols-3 md:grid-cols-5 gap-3 text-center text-lg"></div>
+                <!-- 測驗一 區域 -->
+                <div class="border-2 border-blue-200 rounded-lg p-5 mb-8 bg-blue-50 relative">
+                    <div class="flex flex-col md:flex-row md:items-center justify-between mb-4">
+                        <h3 class="text-xl font-bold text-blue-800 mb-2 md:mb-0">🎙️ 測驗一：單音節 + 多音節</h3>
+                        <div id="recording-indicator-1" class="hidden flex items-center space-x-2 text-red-600 font-bold bg-white px-3 py-1 rounded shadow-sm border border-red-200">
+                            <span class="animate-pulse w-3 h-3 bg-red-600 rounded-full"></span>
+                            <span>錄音中... <span id="record-timer-1">00:00</span> / 03:30</span>
+                        </div>
+                    </div>
+                    
+                    <div class="flex flex-wrap gap-3 mb-4">
+                        <button id="btn-start-1" class="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-6 rounded-full shadow transition-colors">⏺ 開始錄音</button>
+                        <button id="btn-stop-1" class="bg-gray-400 text-white font-bold py-2 px-6 rounded-full shadow cursor-not-allowed" disabled>⏹ 停止錄音</button>
+                    </div>
+                    
+                    <div class="flex flex-col gap-3 mb-6">
+                        <audio id="audio-playback-1" controls class="hidden w-full max-w-md border rounded bg-white"></audio>
+                        <a id="btn-download-1" class="hidden text-center bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-6 rounded-full shadow transition-colors w-max">💾 下載測驗一錄音檔</a>
+                        <p class="text-sm text-green-700 font-bold hidden" id="download-hint-1">↑ 點擊上方按鈕下載，上傳前請記得將檔名改為「學號_姓名_測驗一」。</p>
+                    </div>
+
+                    <div class="bg-white p-5 rounded border border-gray-200 shadow-sm">
+                        <h4 class="text-lg font-bold mb-3 border-b-2 border-gray-100 pb-2 text-gray-700">單音節字詞測驗 (一)</h4>
+                        <div id="grid-c-mono1" class="grid grid-cols-5 md:grid-cols-10 gap-2 text-center text-xl mb-6"></div>
+                        
+                        <h4 class="text-lg font-bold mb-3 border-b-2 border-gray-100 pb-2 text-gray-700">多音節詞語測驗 (一)</h4>
+                        <div id="grid-c-multi1" class="grid grid-cols-3 md:grid-cols-5 gap-3 text-center text-lg"></div>
+                    </div>
+                </div>
+
+                <!-- 測驗二 區域 -->
+                <div class="border-2 border-purple-200 rounded-lg p-5 bg-purple-50 relative">
+                    <div class="flex flex-col md:flex-row md:items-center justify-between mb-4">
+                        <h3 class="text-xl font-bold text-purple-800 mb-2 md:mb-0">🎙️ 測驗二：單音節 + 多音節</h3>
+                        <div id="recording-indicator-2" class="hidden flex items-center space-x-2 text-red-600 font-bold bg-white px-3 py-1 rounded shadow-sm border border-red-200">
+                            <span class="animate-pulse w-3 h-3 bg-red-600 rounded-full"></span>
+                            <span>錄音中... <span id="record-timer-2">00:00</span> / 03:30</span>
+                        </div>
+                    </div>
+                    
+                    <div class="flex flex-wrap gap-3 mb-4">
+                        <button id="btn-start-2" class="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-6 rounded-full shadow transition-colors">⏺ 開始錄音</button>
+                        <button id="btn-stop-2" class="bg-gray-400 text-white font-bold py-2 px-6 rounded-full shadow cursor-not-allowed" disabled>⏹ 停止錄音</button>
+                    </div>
+                    
+                    <div class="flex flex-col gap-3 mb-6">
+                        <audio id="audio-playback-2" controls class="hidden w-full max-w-md border rounded bg-white"></audio>
+                        <a id="btn-download-2" class="hidden text-center bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-6 rounded-full shadow transition-colors w-max">💾 下載測驗二錄音檔</a>
+                        <p class="text-sm text-green-700 font-bold hidden" id="download-hint-2">↑ 點擊上方按鈕下載，上傳前請記得將檔名改為「學號_姓名_測驗二」。</p>
+                    </div>
+
+                    <div class="bg-white p-5 rounded border border-gray-200 shadow-sm">
+                        <h4 class="text-lg font-bold mb-3 border-b-2 border-gray-100 pb-2 text-gray-700">單音節字詞測驗 (二)</h4>
+                        <div id="grid-c-mono2" class="grid grid-cols-5 md:grid-cols-10 gap-2 text-center text-xl mb-6"></div>
+                        
+                        <h4 class="text-lg font-bold mb-3 border-b-2 border-gray-100 pb-2 text-gray-700">多音節詞語測驗 (二)</h4>
+                        <div id="grid-c-multi2" class="grid grid-cols-3 md:grid-cols-5 gap-3 text-center text-lg"></div>
+                    </div>
+                </div>
+
             </div>
         </section>
 
@@ -205,107 +226,110 @@
             });
         });
 
-        // --- 錄音功能邏輯 ---
-        let mediaRecorder;
-        let audioChunks = [];
-        let startTime;
-        let timerInterval;
-        const TIME_LIMIT = 210; // 3分30秒 = 210秒
+        // --- 錄音功能模組 ---
+        function setupRecorder(idSuffix, defaultFileName) {
+            let mediaRecorder;
+            let audioChunks = [];
+            let startTime;
+            let timerInterval;
+            const TIME_LIMIT = 210; // 3分30秒 = 210秒
 
-        const btnStart = document.getElementById('btn-start-record');
-        const btnStop = document.getElementById('btn-stop-record');
-        const btnSubmit = document.getElementById('btn-submit');
-        const audioPlayback = document.getElementById('audio-playback');
-        const recordingIndicator = document.getElementById('recording-indicator');
-        const recordTimer = document.getElementById('record-timer');
-        const submitMsg = document.getElementById('submit-msg');
+            const btnStart = document.getElementById('btn-start-' + idSuffix);
+            const btnStop = document.getElementById('btn-stop-' + idSuffix);
+            const btnDownload = document.getElementById('btn-download-' + idSuffix);
+            const audioPlayback = document.getElementById('audio-playback-' + idSuffix);
+            const indicator = document.getElementById('recording-indicator-' + idSuffix);
+            const timerText = document.getElementById('record-timer-' + idSuffix);
+            const dlHint = document.getElementById('download-hint-' + idSuffix);
 
-        btnStart.addEventListener('click', async () => {
-            try {
-                const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-                mediaRecorder = new MediaRecorder(stream);
-                audioChunks = [];
+            btnStart.addEventListener('click', async () => {
+                try {
+                    const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                    mediaRecorder = new MediaRecorder(stream);
+                    audioChunks = [];
 
-                mediaRecorder.ondataavailable = event => {
-                    audioChunks.push(event.data);
-                };
+                    mediaRecorder.ondataavailable = event => {
+                        audioChunks.push(event.data);
+                    };
 
-                mediaRecorder.onstop = () => {
-                    const audioBlob = new Blob(audioChunks, { type: 'audio/webm' });
-                    const audioUrl = URL.createObjectURL(audioBlob);
-                    audioPlayback.src = audioUrl;
+                    mediaRecorder.onstop = () => {
+                        const audioBlob = new Blob(audioChunks, { type: 'audio/webm' });
+                        const audioUrl = URL.createObjectURL(audioBlob);
+                        
+                        audioPlayback.src = audioUrl;
+                        audioPlayback.classList.remove('hidden');
+                        
+                        btnDownload.href = audioUrl;
+                        btnDownload.download = defaultFileName;
+                        btnDownload.classList.remove('hidden');
+                        dlHint.classList.remove('hidden');
+                        
+                        // 釋放麥克風資源
+                        stream.getTracks().forEach(track => track.stop()); 
+                    };
+
+                    mediaRecorder.start();
                     
-                    audioPlayback.classList.remove('hidden');
-                    btnSubmit.classList.remove('hidden');
-                    submitMsg.classList.add('hidden');
+                    // UI 狀態切換
+                    btnStart.classList.replace('bg-red-500', 'bg-gray-400');
+                    btnStart.classList.replace('hover:bg-red-600', 'bg-gray-400');
+                    btnStart.disabled = true;
+                    btnStart.classList.add('cursor-not-allowed');
                     
-                    // 釋放麥克風資源
-                    stream.getTracks().forEach(track => track.stop()); 
-                };
-
-                mediaRecorder.start();
-                
-                // UI 狀態切換
-                btnStart.classList.replace('bg-red-500', 'bg-gray-400');
-                btnStart.classList.replace('hover:bg-red-600', 'bg-gray-400');
-                btnStart.disabled = true;
-                btnStart.classList.add('cursor-not-allowed');
-                
-                btnStop.classList.replace('bg-gray-400', 'bg-gray-800');
-                btnStop.classList.remove('cursor-not-allowed');
-                btnStop.disabled = false;
-                
-                recordingIndicator.classList.remove('hidden');
-                audioPlayback.classList.add('hidden');
-                btnSubmit.classList.add('hidden');
-                submitMsg.classList.add('hidden');
-
-                // 啟動計時器
-                startTime = Date.now();
-                timerInterval = setInterval(() => {
-                    const elapsed = Date.now() - startTime;
-                    const totalSeconds = Math.floor(elapsed / 1000);
-                    const minutes = String(Math.floor(totalSeconds / 60)).padStart(2, '0');
-                    const seconds = String(totalSeconds % 60).padStart(2, '0');
-                    recordTimer.textContent = `${minutes}:${seconds}`;
+                    btnStop.classList.replace('bg-gray-400', 'bg-gray-800');
+                    btnStop.classList.remove('cursor-not-allowed');
+                    btnStop.disabled = false;
                     
-                    // 超時強制停止 (3分30秒)
-                    if (totalSeconds >= TIME_LIMIT) {
-                        btnStop.click();
-                        alert("已達到 3 分 30 秒的時間限制，錄音已自動停止。");
-                    }
-                }, 1000);
+                    indicator.classList.remove('hidden');
+                    audioPlayback.classList.add('hidden');
+                    btnDownload.classList.add('hidden');
+                    dlHint.classList.add('hidden');
 
-            } catch (err) {
-                alert('無法存取麥克風，請確認您的瀏覽器權限設定。');
-            }
-        });
+                    // 啟動計時器
+                    startTime = Date.now();
+                    timerInterval = setInterval(() => {
+                        const elapsed = Date.now() - startTime;
+                        const totalSeconds = Math.floor(elapsed / 1000);
+                        const minutes = String(Math.floor(totalSeconds / 60)).padStart(2, '0');
+                        const seconds = String(totalSeconds % 60).padStart(2, '0');
+                        timerText.textContent = `${minutes}:${seconds}`;
+                        
+                        // 超時強制停止 (3分30秒)
+                        if (totalSeconds >= TIME_LIMIT) {
+                            btnStop.click();
+                            alert(`測驗錄音已達到 3 分 30 秒的時間限制，已自動停止。`);
+                        }
+                    }, 1000);
 
-        btnStop.addEventListener('click', () => {
-            if (mediaRecorder && mediaRecorder.state !== 'inactive') {
-                mediaRecorder.stop();
-                clearInterval(timerInterval);
-                
-                // UI 狀態還原
-                btnStart.classList.replace('bg-gray-400', 'bg-red-500');
-                btnStart.classList.replace('bg-gray-400', 'hover:bg-red-600');
-                btnStart.disabled = false;
-                btnStart.classList.remove('cursor-not-allowed');
-                
-                btnStop.classList.replace('bg-gray-800', 'bg-gray-400');
-                btnStop.classList.add('cursor-not-allowed');
-                btnStop.disabled = true;
-                
-                recordingIndicator.classList.add('hidden');
-                recordTimer.textContent = "00:00";
-            }
-        });
+                } catch (err) {
+                    alert('無法存取麥克風，請確認您的瀏覽器是否允許網站使用麥克風。');
+                }
+            });
 
-        btnSubmit.addEventListener('click', () => {
-            // 模擬上傳邏輯
-            btnSubmit.classList.add('hidden');
-            submitMsg.classList.remove('hidden');
-        });
+            btnStop.addEventListener('click', () => {
+                if (mediaRecorder && mediaRecorder.state !== 'inactive') {
+                    mediaRecorder.stop();
+                    clearInterval(timerInterval);
+                    
+                    // UI 狀態還原
+                    btnStart.classList.replace('bg-gray-400', 'bg-red-500');
+                    btnStart.classList.replace('bg-gray-400', 'hover:bg-red-600');
+                    btnStart.disabled = false;
+                    btnStart.classList.remove('cursor-not-allowed');
+                    
+                    btnStop.classList.replace('bg-gray-800', 'bg-gray-400');
+                    btnStop.classList.add('cursor-not-allowed');
+                    btnStop.disabled = true;
+                    
+                    indicator.classList.add('hidden');
+                    timerText.textContent = "00:00";
+                }
+            });
+        }
+
+        // 啟動測驗一與測驗二的錄音模組
+        setupRecorder('1', '第五課_測驗一.webm');
+        setupRecorder('2', '第五課_測驗二.webm');
     </script>
 </body>
 </html>
