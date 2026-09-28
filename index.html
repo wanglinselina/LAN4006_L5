@@ -25,6 +25,25 @@
         .section-content { display: none; }
         .section-content.active { display: block; animation: fadeIn 0.3s; }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        
+        /* 多音字卡片專用樣式 */
+        .poly-card {
+            transition: all 0.3s ease;
+        }
+        .poly-card:hover {
+            background-color: #dbeafe; /* Tailwind blue-100 */
+        }
+        .pinyin-text {
+            transition: all 0.3s ease;
+            max-height: 0;
+            opacity: 0;
+            overflow: hidden;
+        }
+        .pinyin-text.show {
+            max-height: 30px;
+            opacity: 1;
+            margin-top: 0.25rem;
+        }
     </style>
 </head>
 <body class="bg-gray-100 text-gray-800 font-sans antialiased min-h-screen relative">
@@ -55,9 +74,15 @@
                     <li><strong>多音字唯一讀音：</strong>在多音節詞語中出現的多音字，只能讀該詞語中<span class="text-blue-600 font-bold">唯一的一個正確讀音</span>。</li>
                 </ul>
             </div>
-            <div class="bg-white rounded-lg shadow p-6">
-                <h2 class="text-xl font-bold mb-4 text-gray-800">多音字讀音辨析練習</h2>
-                <div id="grid-polyphonic" class="grid grid-cols-2 md:grid-cols-5 gap-4"></div>
+            
+            <div class="bg-white rounded-lg shadow p-6 border-t-4 border-blue-500">
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-xl font-bold text-gray-800">多音字讀音辨析練習</h2>
+                    <span class="text-sm bg-blue-100 text-blue-800 py-1 px-3 rounded-full">💡 點擊卡片可顯示/隱藏拼音</span>
+                </div>
+                <div id="grid-polyphonic" class="grid grid-cols-1 md:grid-cols-5 gap-4">
+                    <!-- 透過 JS 渲染 -->
+                </div>
             </div>
         </section>
 
@@ -174,7 +199,14 @@
     <script>
         // --- 詞彙資料庫 ---
         const vocab = {
-            polyphonic: ['查看', '看守', '朝代', '朝氣', '波長', '長官', '沉著', '著急', '重新', '重大'],
+            // 多音字分組結構
+            polyphonicGroups: [
+                { char: '看', words: [{ text: '查看', pinyin: 'chá kàn' }, { text: '看守', pinyin: 'kān shǒu' }] },
+                { char: '朝', words: [{ text: '朝代', pinyin: 'cháo dài' }, { text: '朝氣', pinyin: 'zhāo qì' }] },
+                { char: '長', words: [{ text: '波長', pinyin: 'bō cháng' }, { text: '長官', pinyin: 'zhǎng guān' }] },
+                { char: '著', words: [{ text: '沉著', pinyin: 'chén zhuó' }, { text: '著急', pinyin: 'zháo jí' }] },
+                { char: '重', words: [{ text: '重新', pinyin: 'chóng xīn' }, { text: '重大', pinyin: 'zhòng dà' }] }
+            ],
             sandhi_rules: ['敏感', '稿紙', '一般', '一心', '一齊', '一連', '一早', '一體', '一致', '一項', '不禁', '不惜', '不時', '不行', '不想', '不止', '不怕', '不過'],
             sandhi_up: ['以免', '早已', '子女', '領導', '洗澡', '苦惱', '減少', '美感', '導管', '可以', '一體', '一旁', '一律', '一向', '一早', '不如', '不顧', '不便', '不過', '不免'],
             neutral: ['老太太', '模糊', '曲子', '愛人', '刺蝟', '箱子', '稀罕', '折騰', '騙子', '位子', '晚上', '皮子', '朋友', '道士', '舒服', '笛子', '生意', '稿子', '窗子', '嬸子'],
@@ -192,6 +224,26 @@
         };
 
         // --- 渲染函數 ---
+        
+        // 渲染多音字區塊 (特別處理)
+        function renderPolyphonicGroups() {
+            const container = document.getElementById('grid-polyphonic');
+            container.innerHTML = vocab.polyphonicGroups.map(group => `
+                <div class="border border-gray-200 rounded-lg p-3 bg-gray-50 shadow-sm flex flex-col items-center">
+                    <div class="text-sm text-gray-500 mb-2 font-bold bg-white px-2 rounded-full shadow-inner">字：${group.char}</div>
+                    <div class="w-full flex flex-col gap-2">
+                        ${group.words.map(w => `
+                            <div class="poly-card cursor-pointer bg-blue-50 border border-blue-200 text-blue-800 font-bold py-2 px-3 rounded text-center" onclick="this.querySelector('.pinyin-text').classList.toggle('show')">
+                                <div class="text-lg">${w.text}</div>
+                                <div class="pinyin-text text-sm font-normal text-gray-600">${w.pinyin}</div>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // 渲染一般網格
         function renderGrid(containerId, wordsArray, baseClass = "bg-gray-50 border border-gray-200 p-3 rounded text-center word-card") {
             const container = document.getElementById(containerId);
             container.innerHTML = wordsArray.map(word => 
@@ -200,7 +252,7 @@
         }
 
         // 初始化渲染
-        renderGrid('grid-polyphonic', vocab.polyphonic, "bg-blue-50 border border-blue-200 p-3 rounded text-center word-card text-lg font-bold");
+        renderPolyphonicGroups();
         renderGrid('grid-sandhi-rules', vocab.sandhi_rules);
         renderGrid('grid-sandhi-up', vocab.sandhi_up);
         renderGrid('grid-neutral', vocab.neutral);
